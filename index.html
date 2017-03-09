@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"/>
+<script src="./bower_components/openseadragon/built-openseadragon/openseadragon/openseadragon.min.js"></script>
+<script src="./fabric.js-1.6.5/dist/fabric.js"></script>
+<script src="openseadragon-fabricjs-overlay.js"></script>
+</head>
+<body>
+<div id="viewer" style="width:1600px;height:1000px;"></div>
+<script type="text/javascript">
+var TileSource = {
+		        	width: 190464,
+		            height: 102144,
+		            tileWidth: 256,
+		            tileHeight: 256,
+		            minLevel: 0,
+		            maxLevel: 10,
+		            getTileUrl: function(level, x, y) {
+		            	return "http://candygram.neurology.emory.edu:8080/api/v1/item/58b59ed892ca9a000beee3e8/tiles/zxy/" + level + "/" + x + "/" + y;
+		        	}
+				};
+
+
+        viewer = OpenSeadragon({
+            id: 'viewer',
+            prefixUrl: "bower_components/openseadragon/built-openseadragon/openseadragon/images/",
+            navigatorPosition: "BOTTOM_RIGHT",
+            showNavigator: true,
+            tileSources: TileSource
+        });
+
+        var canvas = viewer.fabricjsOverlay().fabricCanvas();
+        console.log(canvas);
+
+        var circle = new fabric.Circle({
+		  radius: 100,
+		  fill: '#eef',
+		  scaleY: 0.5,
+		  originX: 'center',
+		  originY: 'center'
+		});
+		
+		var triangle = new fabric.Triangle({
+		  width: 20, height: 30, fill: 'blue', left: 50, top: 50
+		});
+
+		var rectangle  = new fabric.Rect({
+		    width: 10, height: 20,
+		    left: 100, top: 100,
+		    fill: 'yellow',
+		    angle: 30
+		  })
+
+		var group = new fabric.Group([ circle, triangle, rectangle ], {
+			  left: 150,
+			  top: 100,
+			  angle: -10
+		});
+
+		canvas.add(group);
+
+ </script>
+
+
+
+</body>
+</html>
