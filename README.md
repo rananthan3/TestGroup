@@ -1,0 +1,2 @@
+# TestGroup
+Test removing groups
