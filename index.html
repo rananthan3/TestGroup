@@ -2,12 +2,17 @@
 <html>
 <head>
 <meta charset="utf-8"/>
-<script src="./bower_components/openseadragon/built-openseadragon/openseadragon/openseadragon.min.js"></script>
-<script src="./fabric.js-1.6.5/dist/fabric.js"></script>
+<link rel="stylesheet" href="bower_components/webix/codebase/webix.css" type="text/css" charset="utf-8">
+<script src="bower_components/openseadragon/built-openseadragon/openseadragon/openseadragon.min.js"></script>
 <script src="openseadragon-fabricjs-overlay.js"></script>
+<script src="fabric.js-1.6.5/dist/fabric.js"></script>
+<script src="bower_components/webix/codebase/webix.js" type="text/javascript" charset="utf-8"></script>
+
+
 </head>
 <body>
 <div id="viewer" style="width:1600px;height:1000px;"></div>
+<div id="data_container"></div>
 <script type="text/javascript">
 var TileSource = {
 		        	width: 190464,
@@ -30,11 +35,13 @@ var TileSource = {
             tileSources: TileSource
         });
 
+
+
         var canvas = viewer.fabricjsOverlay().fabricCanvas();
-        console.log(canvas);
+        
 
         var circle = new fabric.Circle({
-		  radius: 100,
+		  radius: 10000,
 		  fill: '#eef',
 		  scaleY: 0.5,
 		  originX: 'center',
@@ -42,23 +49,64 @@ var TileSource = {
 		});
 		
 		var triangle = new fabric.Triangle({
-		  width: 20, height: 30, fill: 'blue', left: 50, top: 50
+		  width: 20000, height: 30000, fill: 'blue', left: 50, top: 50
 		});
 
 		var rectangle  = new fabric.Rect({
-		    width: 10, height: 20,
-		    left: 100, top: 100,
+		    width: 10000, height: 20000,
+		    left: 1000, top: 1000,
 		    fill: 'yellow',
 		    angle: 30
 		  })
 
 		var group = new fabric.Group([ circle, triangle, rectangle ], {
-			  left: 150,
-			  top: 100,
+			  left: 1500,
+			  top: 1000,
 			  angle: -10
 		});
 
 		canvas.add(group);
+
+		
+
+
+
+webix.ui({
+	container:"data_container",
+	cols:[
+		{view: "button", label: "Group", click:groupObj}, {view: "button", label: "Ungroup", click:ungroup}
+	]
+});
+
+
+
+function ungroup(){
+	
+	var items = group._objects;
+	group._restoreObjectsState();
+	canvas.remove(group);
+
+	for(var i = 0; i < items.length; i++) {
+		canvas.add(items[i]);
+	}
+
+	canvas.renderAll();
+}
+
+function groupObj(){
+
+	canvas.forEachObject(function(o){ canvas.remove(o) });
+
+	canvas.renderAll();
+	//canvas.add(group);
+
+
+
+}
+
+
+
+
 
  </script>
 
